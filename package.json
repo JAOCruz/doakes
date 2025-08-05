@@ -1,0 +1,22 @@
+{
+  "name": "passione",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "tailwindcss -i ./styles.css -o ./dist/output.css --watch",
+    "start:server": "http-server -p 8080",
+    "start": "concurrently \"npm run build:css\" \"npm run start:server\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "concurrently": "^x.x.x",
+    "http-server": "^14.1.1",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^3.4.14"
+  }
+}

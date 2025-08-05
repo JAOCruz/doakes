@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Detective</title>
+   
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+   
+  <!-- Tailwind CSS (local setup) -->
+  <link href="/dist/output.css" rel="stylesheet">
+   
+  <!-- Font Imports -->
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Playfair+Display&display=swap" rel="stylesheet">
+  <style>
+    .font-creepster { font-family: 'Creepster', cursive; }
+    .font-body { font-family: 'Playfair Display', serif; }
+    .text-blood-red { color: #8B0000; }
+    .bg-blood-red { background-color: #8B0000; }
+    .hover\:bg-blood-red:hover { background-color: #8B0000; }
+    
+    /* Text cutout effect - shows video through text */
+    .detective-cutout {
+      position: relative;
+      color: transparent;
+      -webkit-text-stroke: 5px rgba(255, 0, 0, 0.3);
+      mix-blend-mode: screen;
+      filter: contrast(2) brightness(2);
+    }
+    
+    /* Alternative: use blend mode to create cutout */
+    .detective-blend {
+      mix-blend-mode: difference;
+      color: rgb(255, 0, 0);
+      filter: contrast(5) brightness(2);
+    }
+  </style>
+</head>
+
+<body class="bg-gray-900 text-white font-body text-2xl md:text-2xl leading-relaxed">
+  <!-- Hero Section -->
+  <section id="home" class="relative h-screen flex flex-col overflow-hidden">
+    <!-- Background Video -->
+    <video autoplay muted loop class="absolute inset-0 w-full h-full object-cover">
+      <source src="images/video.mp4" type="video/mp4">
+    </video>
+    <!-- Overlay for better text readability -->
+    <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+         
+    <div class="relative z-10 flex-grow flex items-center justify-center text-center max-w-3xl mx-auto px-4">
+      <div>
+        <div class="relative mb-4">
+          <h2 class="text-[20rem] font-creepster tracking-widest detective-cutout leading-none">Detective</h2>
+        </div>
+        <p class="text-2xl text-white mb-10 tracking-wider">Never jump the fence if you're not willing to face what's on the other side.</p>
+                 
+        <!-- Static Text -->
+        <p class="text-xl text-white mb-6 tracking-wider">The truth is out there.</p>
+         
+        <!-- Buttons in Flex Container -->
+        <div class="flex justify-center space-x-4 mt-2">
+          <a href="" class="inline-block bg-blood-red text-white py-4 px-6 rounded-xl font-creepster text-2xl hover:bg-white hover:text-blood-red hover:scale-105 transition">CONTRACT</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>
