@@ -42,6 +42,12 @@
       color: rgb(255, 0, 0);
       filter: contrast(5) brightness(2);
     }
+    
+    /* Button hover styles */
+    .contract-button:hover {
+      background-color: white !important;
+      color: #8B0000 !important;
+    }
   </style>
 </head>
 
@@ -54,7 +60,8 @@
     </video>
     <!-- Background Image (Mobile Only) -->
     <div class="absolute inset-0 w-full h-full bg-cover bg-center md:hidden" style="background-image: url('images/image.png');"></div>
-    <!-- Overlay for better text readability -->
+    <!-- Overlay for
+      better text readability -->
     <div class="absolute inset-0 bg-black bg-opacity-60"></div>
          
     <div class="relative z-10 flex-grow flex items-center justify-center text-center max-w-3xl mx-auto px-4">
@@ -69,7 +76,7 @@
         
         <!-- Buttons in Flex Container -->
         <div class="flex justify-center mt-2 px-4">
-          <a href="" class="inline-block bg-blood-red text-white py-3 px-4 md:py-4 md:px-6 rounded-xl font-creepster text-lg md:text-2xl hover:bg-white hover:text-blood-red hover:scale-105 transition">CONTRACT</a>
+          <button onclick="copyContract()" class="contract-button inline-block bg-blood-red text-white py-3 px-4 md:py-4 md:px-6 rounded-xl font-creepster text-lg md:text-2xl hover:scale-105 transition cursor-pointer">CONTRACT</button>
         </div>
         
         <!-- Audio Player -->
@@ -82,8 +89,100 @@
             </audio>
           </div>
         </div>
+              </div>
       </div>
-    </div>
-  </section>
-</body>
+    </section>
+    
+    <script>
+      function copyContract() {
+        const contractAddress = '9VZyXtbeg6pVNwTh7fT4UHwQPsxAZsEsUCWTRvGhpump';
+        
+        // Try modern clipboard API first
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(contractAddress).then(function() {
+            showSuccess();
+          }).catch(function(err) {
+            fallbackCopy();
+          });
+        } else {
+          fallbackCopy();
+        }
+        
+        function showSuccess() {
+          const button = event.target;
+          const originalText = button.textContent;
+          button.textContent = 'COPIED!';
+          button.style.backgroundColor = '#4CAF50';
+          
+          setTimeout(function() {
+            button.textContent = originalText;
+            button.style.backgroundColor = '#8B0000';
+          }, 2000);
+        }
+        
+        function fallbackCopy() {
+          // Create temporary textarea element
+          const textArea = document.createElement('textarea');
+          textArea.value = contractAddress;
+          textArea.style.position = 'fixed';
+          textArea.style.left = '-999999px';
+          textArea.style.top = '-999999px';
+          document.body.appendChild(textArea);
+          textArea.focus();
+          textArea.select();
+          
+          try {
+            document.execCommand('copy');
+            showSuccess();
+          } catch (err) {
+            console.error('Fallback copy failed:', err);
+            showCustomNotification('Contract address copied to clipboard!', contractAddress);
+          }
+          
+          document.body.removeChild(textArea);
+        }
+      }
+      
+      function showCustomNotification(message, contractAddress) {
+        // Remove existing notification if any
+        const existingNotification = document.getElementById('custom-notification');
+        if (existingNotification) {
+          existingNotification.remove();
+        }
+        
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.id = 'custom-notification';
+        notification.innerHTML = `
+          <div class="fixed top-4 right-4 bg-black bg-opacity-90 border border-red-500 rounded-xl p-4 max-w-sm z-50 transform transition-all duration-300 translate-x-full">
+            <div class="flex items-center justify-between">
+              <div class="flex-1">
+                <p class="text-white font-creepster text-sm mb-2">${message}</p>
+                <p class="text-red-400 font-mono text-xs break-all">${contractAddress}</p>
+              </div>
+              <button onclick="this.parentElement.parentElement.remove()" class="text-white hover:text-red-400 ml-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Animate in
+        setTimeout(() => {
+          notification.querySelector('div').classList.remove('translate-x-full');
+        }, 100);
+        
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+          if (notification.parentElement) {
+            notification.remove();
+          }
+        }, 5000);
+      }
+    </script>
+  </body>
 </html>
